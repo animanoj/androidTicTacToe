@@ -13,7 +13,7 @@ import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
-    int player;
+    int moves;
     int[][] state;
     int[][] winningPositions = {{0, 1, 2}, {3, 4, 5}, {6, 7, 8}, {0, 3, 6}, {1, 4, 7}, {2, 5, 8}, {0, 4, 8}, {2, 4, 6}};
 
@@ -21,11 +21,7 @@ public class MainActivity extends AppCompatActivity {
     LinearLayout winLayout;
 
     private void updateTurnText() {
-        if(player % 2 == 0) {
-            playerText.setText("Player 1's Turn");
-        } else {
-            playerText.setText("Player 2's Turn");
-        }
+        playerText.setText("Player " + ((moves % 2) + 1) + "'s Turn");
     }
 
     private void updateResultText(int n) {
@@ -35,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
             case 2:
                 text.setText("Player " + n + " won!");
                 break;
-            case -1:
+            case 3:
                 text.setText("Draw!");
                 break;
             default:
@@ -44,17 +40,22 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private int checkForWinner() {
-        for(int i = 0; i < winningPositions.length; i++) {
+        for (int i = 0; i < winningPositions.length; i++) {
             int x1 = getX(winningPositions[i][0]), x2 = getX(winningPositions[i][1]), x3 = getX(winningPositions[i][2]);
             int y1 = getY(winningPositions[i][0]), y2 = getY(winningPositions[i][1]), y3 = getY(winningPositions[i][2]);
-            if((state[x1][y1] == state[x2][y2]) &&
+            if ((state[x1][y1] == state[x2][y2]) &&
                     (state[x2][y2] == state[x3][y3]) &&
                     (state[x3][y3] == state[x1][y1]) &&
                     (state[x1][y1] != -1)) {
                 updateResultText(state[x1][y1] + 1);
                 endGame();
-                return 0;
+                return state[x1][y1];
             }
+        }
+        if(moves == 9) {
+            updateResultText(3);
+            endGame();
+            return 2;
         }
         return -1;
     }
@@ -106,7 +107,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void dropIn(View view) {
-        if(player == 0) {
+        if(moves == 0) {
             winLayout.setVisibility(View.INVISIBLE);
         }
 
@@ -119,7 +120,7 @@ public class MainActivity extends AppCompatActivity {
         }
         counter.setImageResource(0);
         counter.setTranslationY(-1000f);
-        if((player % 2) == 0) {
+        if((moves % 2) == 0) {
             counter.setImageResource(R.drawable.x);
         }
         else {
@@ -127,18 +128,12 @@ public class MainActivity extends AppCompatActivity {
         }
         counter.animate().translationYBy(1000f).alpha(1f).rotation(360f).setDuration(300);
 
-        state[x][y] = (player % 2);
-        if(checkForWinner() == 0) {
+        state[x][y] = (moves % 2);
+        moves++;
+        if(checkForWinner() != -1) {
             return;
         }
-
-        player++;
-        if(player == 9) {
-            updateResultText(-1);
-            endGame();
-        } else {
-            updateTurnText();
-        }
+        updateTurnText();
 
     }
 
@@ -156,7 +151,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void restart(View view) {
-        player = 0;
+        moves = 0;
         resetState();
 
         android.support.v7.widget.GridLayout grid = (android.support.v7.widget.GridLayout) findViewById(R.id.gameBoard);
@@ -185,7 +180,7 @@ public class MainActivity extends AppCompatActivity {
         playerText = (TextView) findViewById(R.id.playerView);
         winLayout = (LinearLayout) findViewById(R.id.winnerLayout);
 
-        player = 0;
+        moves = 0;
         updateTurnText();
     }
 
