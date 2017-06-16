@@ -129,15 +129,16 @@
 
     </android.support.v7.widget.GridLayout>
 
-    <Button
-        android:text="Restart"
+    <TextView
+        android:id="@+id/playerView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:id="@+id/restart"
-        android:onClick="restart" />
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:text="Player 1's Turn"
+        android:textColor="@android:color/black"
+        android:textSize="14sp" />
 
     <LinearLayout
         android:orientation="vertical"

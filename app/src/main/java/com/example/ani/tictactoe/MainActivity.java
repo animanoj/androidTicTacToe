@@ -2,6 +2,9 @@ package com.example.ani.tictactoe;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -14,6 +17,16 @@ public class MainActivity extends AppCompatActivity {
     int player;
     int[] state = {-1, -1, -1, -1, -1, -1, -1, -1, -1};
     int[][] winningPositions = {{0, 1, 2}, {3, 4, 5}, {6, 7, 8}, {0, 3, 6}, {1, 4, 7}, {2, 5, 8}, {0, 4, 8}, {2, 4, 6}};
+
+    TextView playerText;
+
+    private void updateTurnText() {
+        if(player % 2 == 0) {
+            playerText.setText("Player 1's Turn");
+        } else {
+            playerText.setText("Player 2's Turn");
+        }
+    }
 
     public void dropIn(View view) {
         if(player == 0) {
@@ -41,7 +54,6 @@ public class MainActivity extends AppCompatActivity {
         counter.animate().translationYBy(1000f).alpha(1f).rotation(360f).setDuration(300);
 
         state[Integer.parseInt(counter.getTag().toString())] = (player % 2);
-        player++;
         for(int i = 0; i < winningPositions.length; i++) {
             if((state[winningPositions[i][0]] == state[winningPositions[i][1]]) &&
                     (state[winningPositions[i][1]] == state[winningPositions[i][2]]) &&
@@ -50,18 +62,24 @@ public class MainActivity extends AppCompatActivity {
                 TextView text = (TextView) findViewById(R.id.winnerText);
                 text.setText("Player " + (state[winningPositions[i][0]] + 1) + " won!");
                 endGame();
+                return;
             }
         }
 
+        player++;
         if(player == 9) {
             TextView text = (TextView) findViewById(R.id.winnerText);
             text.setText("Draw!");
             endGame();
+        } else {
+            updateTurnText();
         }
 
     }
 
     public void endGame() {
+        playerText.setVisibility(View.INVISIBLE);
+
         android.support.v7.widget.GridLayout grid = (android.support.v7.widget.GridLayout) findViewById(R.id.gameBoard);
 
         for(int i = 0; i < grid.getChildCount(); i++) {
@@ -73,10 +91,6 @@ public class MainActivity extends AppCompatActivity {
         LinearLayout layout = (LinearLayout) findViewById(R.id.winnerLayout);
         layout.setVisibility(View.VISIBLE);
         layout.animate().alpha(1f).setDuration(300);
-
-        Button restart = (Button) findViewById(R.id.restart);
-        restart.animate().alpha(0f).setDuration(300);
-
     }
 
     public void restart(View view) {
@@ -99,9 +113,8 @@ public class MainActivity extends AppCompatActivity {
         LinearLayout layout = (LinearLayout) findViewById(R.id.winnerLayout);
         layout.animate().alpha(0f).setDuration(300);
 
-        Button restart = (Button) findViewById(R.id.restart);
-        restart.animate().alpha(1f).setDuration(300);
-
+        playerText.setVisibility(View.VISIBLE);
+        updateTurnText();
     }
 
     @Override
@@ -109,6 +122,28 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        playerText = (TextView) findViewById(R.id.playerView);
+
         player = 0;
+        updateTurnText();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_main, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch(item.getItemId()) {
+            case R.id.restart:
+                restart(null);
+                break;
+            default:
+                break;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
