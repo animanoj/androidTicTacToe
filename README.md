@@ -1,2 +1,2 @@
 # androidTicTacToe
-An Android Tic Tac Toe game for two players
+An Android Tic Tac Toe game for one (versus AI) and two player matches
