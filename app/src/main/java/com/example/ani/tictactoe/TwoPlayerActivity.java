@@ -35,7 +35,7 @@ public class TwoPlayerActivity extends AppCompatActivity {
                 text.setText("Player " + n + " won!");
                 break;
             case 3:
-                text.setText("Draw!");
+                text.setText(R.string.draw);
                 break;
             default:
                 break;

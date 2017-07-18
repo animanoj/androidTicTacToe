@@ -25,9 +25,9 @@ public class OnePlayerActivity extends AppCompatActivity {
 
     private void updateTurnText() {
         if(moves % 2 == 0)
-            playerText.setText("Player's Turn");
+            playerText.setText(R.string.player_text);
         else {
-            playerText.setText("AI's Turn");
+            playerText.setText(R.string.ai_text);
             AIMove();
         }
     }
@@ -36,13 +36,13 @@ public class OnePlayerActivity extends AppCompatActivity {
         TextView text = (TextView) findViewById(R.id.winnerText);
         switch(n) {
             case 1:
-                text.setText("You Won!");
+                text.setText(R.string.win);
                 break;
             case 2:
-                text.setText("You Lost!");
+                text.setText(R.string.lose);
                 break;
             case 3:
-                text.setText("Draw!");
+                text.setText(R.string.draw);
                 break;
             default:
                 break;

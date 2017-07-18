@@ -5,6 +5,6 @@
         android:id="@+id/restart"
         app:showAsAction="always"
         android:icon="@drawable/restart_icon"
-        android:title="Restart" />
-    <item android:title="Menu" android:id="@+id/menu_button" />
+        android:title="@string/restart" />
+    <item android:title="@string/menu" android:id="@+id/menu_button" />
 </menu>

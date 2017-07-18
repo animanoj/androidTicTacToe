@@ -3,7 +3,7 @@
     package="com.example.ani.tictactoe">
 
     <application
-        android:allowBackup="true"
+        android:allowBackup="false"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
@@ -11,8 +11,21 @@
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <!-- Accepts URIs that begin with "http://www.example.com/tictactoe” -->
+                <data android:scheme="http"
+                    android:host="www.example.com"
+                    android:pathPrefix="/tictactoe" />
+                <!-- note that the leading "/" is required for pathPrefix-->
+                <!-- Accepts URIs that begin with "example://tictactoe” -->
+                <data android:scheme="example"
+                    android:host="tictactoe" />
+
             </intent-filter>
         </activity>
         <activity android:name=".TwoPlayerActivity" />

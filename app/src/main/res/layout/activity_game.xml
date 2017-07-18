@@ -29,7 +29,8 @@
             app:layout_columnWeight="0.33"
             android:padding="15dp"
             android:onClick="dropIn"
-            android:tag="0" />
+            android:tag="0"
+            android:contentDescription="@string/point0"/>
 
         <ImageView
             android:id="@+id/point1"
@@ -41,7 +42,8 @@
             app:layout_columnWeight="0.33"
             android:padding="15dp"
             android:onClick="dropIn"
-            android:tag="1" />
+            android:tag="1"
+            android:contentDescription="@string/point1"/>
 
         <ImageView
             android:id="@+id/point2"
@@ -53,7 +55,8 @@
             app:layout_columnWeight="0.33"
             android:padding="15dp"
             android:onClick="dropIn"
-            android:tag="2" />
+            android:tag="2"
+            android:contentDescription="@string/point2"/>
 
         <ImageView
             android:id="@+id/point3"
@@ -65,7 +68,8 @@
             app:layout_columnWeight="0.33"
             android:padding="15dp"
             android:onClick="dropIn"
-            android:tag="3" />
+            android:tag="3"
+            android:contentDescription="@string/point3"/>
 
         <ImageView
             android:id="@+id/point4"
@@ -77,7 +81,8 @@
             app:layout_columnWeight="0.33"
             android:padding="15dp"
             android:onClick="dropIn"
-            android:tag="4" />
+            android:tag="4"
+            android:contentDescription="@string/point4"/>
 
         <ImageView
             android:id="@+id/point5"
@@ -89,7 +94,8 @@
             app:layout_columnWeight="0.33"
             android:padding="15dp"
             android:onClick="dropIn"
-            android:tag="5" />
+            android:tag="5"
+            android:contentDescription="@string/point5"/>
 
         <ImageView
             android:id="@+id/point6"
@@ -101,7 +107,8 @@
             app:layout_columnWeight="0.33"
             android:padding="15dp"
             android:onClick="dropIn"
-            android:tag="6" />
+            android:tag="6"
+            android:contentDescription="@string/point6"/>
 
         <ImageView
             android:id="@+id/point7"
@@ -113,7 +120,8 @@
             app:layout_columnWeight="0.33"
             android:padding="15dp"
             android:onClick="dropIn"
-            android:tag="7" />
+            android:tag="7"
+            android:contentDescription="@string/point7"/>
 
         <ImageView
             android:id="@+id/point8"
@@ -125,7 +133,8 @@
             app:layout_columnWeight="0.33"
             android:padding="15dp"
             android:onClick="dropIn"
-            android:tag="8" />
+            android:tag="8"
+            android:contentDescription="@string/point8"/>
 
     </android.support.v7.widget.GridLayout>
 
@@ -136,7 +145,7 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:text="Player 1's Turn"
+        android:text="@string/default_move"
         android:textColor="@android:color/black"
         android:textSize="14sp" />
 
@@ -159,7 +168,7 @@
             android:textSize="40sp" />
 
         <Button
-            android:text="Play again"
+            android:text="@string/play_again"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/playAgain"

@@ -16,23 +16,28 @@
         android:orientation="horizontal"
         android:layout_alignParentBottom="true"
         android:layout_centerVertical="true"
-        android:layout_marginBottom="30dp">
+        android:layout_marginBottom="30dp"
+        style="?android:attr/buttonBarStyle" >
 
         <Button
             android:id="@+id/buttonOne"
+            style="?android:attr/buttonBarButtonStyle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="0.5"
             android:onClick="onePlayer"
-            android:text="1 Player" />
+            android:text="@string/one_player"
+            android:textColor="@android:color/black" />
 
         <Button
             android:id="@+id/buttonTwo"
+            style="?android:attr/buttonBarButtonStyle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="0.5"
             android:onClick="twoPlayer"
-            android:text="2 Players" />
+            android:text="@string/two_player"
+            android:textColor="@android:color/black" />
 
     </LinearLayout>
 
@@ -42,7 +47,7 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
-        android:text="Tic Tac Toe"
+        android:text="@string/app_name"
         android:textColor="@android:color/black"
         android:textSize="50sp" />
 
