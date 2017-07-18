@@ -12,6 +12,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.jetbrains.annotations.Contract;
+
 public class OnePlayerActivity extends AppCompatActivity {
 
     int moves;
@@ -22,15 +24,22 @@ public class OnePlayerActivity extends AppCompatActivity {
     LinearLayout winLayout;
 
     private void updateTurnText() {
-        playerText.setText("Player " + ((moves % 2) + 1) + "'s Turn");
+        if(moves % 2 == 0)
+            playerText.setText("Player's Turn");
+        else {
+            playerText.setText("AI's Turn");
+            AIMove();
+        }
     }
 
     private void updateResultText(int n) {
         TextView text = (TextView) findViewById(R.id.winnerText);
         switch(n) {
             case 1:
+                text.setText("You Won!");
+                break;
             case 2:
-                text.setText("Player " + n + " won!");
+                text.setText("You Lost!");
                 break;
             case 3:
                 text.setText("Draw!");
@@ -40,27 +49,24 @@ public class OnePlayerActivity extends AppCompatActivity {
         }
     }
 
-    private int checkForWinner() {
-        for (int i = 0; i < winningPositions.length; i++) {
-            int x1 = getX(winningPositions[i][0]), x2 = getX(winningPositions[i][1]), x3 = getX(winningPositions[i][2]);
-            int y1 = getY(winningPositions[i][0]), y2 = getY(winningPositions[i][1]), y3 = getY(winningPositions[i][2]);
+    private int checkForWinner(int[][] state, int moves) {
+        for (int[] combo : winningPositions) {
+            int x1 = getX(combo[0]), x2 = getX(combo[1]), x3 = getX(combo[2]);
+            int y1 = getY(combo[0]), y2 = getY(combo[1]), y3 = getY(combo[2]);
             if ((state[x1][y1] == state[x2][y2]) &&
                     (state[x2][y2] == state[x3][y3]) &&
                     (state[x3][y3] == state[x1][y1]) &&
                     (state[x1][y1] != -1)) {
-                updateResultText(state[x1][y1] + 1);
-                endGame();
                 return state[x1][y1];
             }
         }
         if(moves == 9) {
-            updateResultText(3);
-            endGame();
             return 2;
         }
         return -1;
     }
 
+    @Contract(pure = true)
     private int getX(int pos) {
         int x = 0;
         switch(pos) {
@@ -80,6 +86,7 @@ public class OnePlayerActivity extends AppCompatActivity {
         return x;
     }
 
+    @Contract(pure = true)
     private int getY(int pos) {
         int y = 0;
         switch(pos) {
@@ -107,6 +114,69 @@ public class OnePlayerActivity extends AppCompatActivity {
         }
     }
 
+    private void jumpToMain() {
+        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+        startActivity(intent);
+    }
+
+    private int recursiveMove(int[][] tempState, int player, int moves) {
+        int winner = checkForWinner(tempState, moves);
+        if(winner != -1) {
+            switch(winner) {
+                case 0:
+                    return -1;
+                case 1:
+                    return 1;
+                case 2:
+                    return 0;
+            }
+        }
+
+        int nextScore = -10;
+        for(int i = 0; i < 3; i++) {
+            for(int j = 0; j < 3; j++) {
+                if(tempState[i][j] == -1) {
+                    tempState[i][j] = player;
+                    int currScore = recursiveMove(tempState, (player + 1) % 2, moves + 1);
+                    tempState[i][j] = -1;
+                    if(nextScore == -10 || (player == 1 && currScore > nextScore) || (player == 0 && currScore < nextScore))
+                        nextScore = currScore;
+                }
+            }
+        }
+        return nextScore;
+    }
+
+    private int[][] stateClone() {
+        int[][] tempState = new int[3][3];
+        for(int i = 0; i < 3; i++) {
+            System.arraycopy(state[i], 0, tempState[i], 0, 3);
+        }
+        return tempState;
+    }
+
+    private void AIMove() {
+        int move = -1;
+        int score = -2;
+        for(int i = 0; i < 3; i++) {
+            for(int j = 0; j < 3; j++) {
+                if(state[i][j] == -1) {
+                    int[][] tempState = stateClone();
+                    tempState[i][j] = 1;
+                    int currScore = recursiveMove(tempState, 0, moves + 1);
+                    if(currScore > score) {
+                        move = (i * 3) + j;
+                        score = currScore;
+                    }
+                }
+            }
+        }
+
+        int viewID = getResources().getIdentifier("point" + move, "id", getPackageName());
+        ImageView view = (ImageView) findViewById(viewID);
+        dropIn(view);
+    }
+
     public void dropIn(View view) {
         if(moves == 0) {
             winLayout.setVisibility(View.INVISIBLE);
@@ -131,11 +201,14 @@ public class OnePlayerActivity extends AppCompatActivity {
 
         state[x][y] = (moves % 2);
         moves++;
-        if(checkForWinner() != -1) {
+
+        int result = checkForWinner(state, moves);
+        if(result != -1) {
+            updateResultText(result + 1);
+            endGame();
             return;
         }
         updateTurnText();
-
     }
 
     public void endGame() {
@@ -183,11 +256,6 @@ public class OnePlayerActivity extends AppCompatActivity {
 
         moves = 0;
         updateTurnText();
-    }
-
-    private void jumpToMain() {
-        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-        startActivity(intent);
     }
 
     @Override

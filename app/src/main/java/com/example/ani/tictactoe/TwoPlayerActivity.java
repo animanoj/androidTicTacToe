@@ -12,6 +12,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.jetbrains.annotations.Contract;
+
 public class TwoPlayerActivity extends AppCompatActivity {
 
     int moves;
@@ -41,26 +43,23 @@ public class TwoPlayerActivity extends AppCompatActivity {
     }
 
     private int checkForWinner() {
-        for (int i = 0; i < winningPositions.length; i++) {
-            int x1 = getX(winningPositions[i][0]), x2 = getX(winningPositions[i][1]), x3 = getX(winningPositions[i][2]);
-            int y1 = getY(winningPositions[i][0]), y2 = getY(winningPositions[i][1]), y3 = getY(winningPositions[i][2]);
+        for (int[] combo : winningPositions) {
+            int x1 = getX(combo[0]), x2 = getX(combo[1]), x3 = getX(combo[2]);
+            int y1 = getY(combo[0]), y2 = getY(combo[1]), y3 = getY(combo[2]);
             if ((state[x1][y1] == state[x2][y2]) &&
                     (state[x2][y2] == state[x3][y3]) &&
                     (state[x3][y3] == state[x1][y1]) &&
                     (state[x1][y1] != -1)) {
-                updateResultText(state[x1][y1] + 1);
-                endGame();
                 return state[x1][y1];
             }
         }
         if(moves == 9) {
-            updateResultText(3);
-            endGame();
             return 2;
         }
         return -1;
     }
 
+    @Contract(pure = true)
     private int getX(int pos) {
         int x = 0;
         switch(pos) {
@@ -80,6 +79,7 @@ public class TwoPlayerActivity extends AppCompatActivity {
         return x;
     }
 
+    @Contract(pure = true)
     private int getY(int pos) {
         int y = 0;
         switch(pos) {
@@ -131,11 +131,14 @@ public class TwoPlayerActivity extends AppCompatActivity {
 
         state[x][y] = (moves % 2);
         moves++;
-        if(checkForWinner() != -1) {
+
+        int result = checkForWinner();
+        if(result != -1) {
+            updateResultText(result + 1);
+            endGame();
             return;
         }
         updateTurnText();
-
     }
 
     public void endGame() {
