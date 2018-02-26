@@ -16,7 +16,8 @@
     <string name="point6">Image for grid position 6</string>
     <string name="point7">Image for grid position 7</string>
     <string name="point8">Image for grid position 8</string>
-    <string name="default_move">Player 1\'s Turn</string>
+    <string name="player_move">Player %1$d\'s Turn</string>
+    <string name="player_win">Player %1$d Won!</string>
     <string name="play_again">Play Again</string>
     <string name="restart">Restart</string>
     <string name="menu">Menu</string>

@@ -25,7 +25,6 @@
                 <!-- Accepts URIs that begin with "example://tictactoe” -->
                 <data android:scheme="example"
                     android:host="tictactoe" />
-
             </intent-filter>
         </activity>
         <activity android:name=".TwoPlayerActivity" />
