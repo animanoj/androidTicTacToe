@@ -157,7 +157,6 @@ public abstract class Game extends AppCompatActivity {
     }
 
     public void restart(View view) {
-        System.err.println("Im here");
         moves = 0;
         resetState();
 

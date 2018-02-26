@@ -18,44 +18,45 @@ public class OnePlayerActivity extends Game {
             }
         }
 
-        int nextScore = -10;
+        int nextScore = 0;
         for(int i = 0; i < 3; i++) {
             for(int j = 0; j < 3; j++) {
                 if(tempState[i][j] == -1) {
                     tempState[i][j] = player;
-                    int currScore = recursiveMove(tempState, (player + 1) % 2, moves + 1);
+                    nextScore += Math.max(recursiveMove(tempState, (player + 1) % 2, moves + 1), 0);
                     tempState[i][j] = -1;
-                    if(nextScore == -10 || (player == 1 && currScore > nextScore) || (player == 0 && currScore < nextScore))
-                        nextScore = currScore;
                 }
             }
         }
         return nextScore;
     }
 
-    private int[][] stateClone() {
-        int[][] tempState = new int[3][3];
-        for(int i = 0; i < 3; i++) {
-            System.arraycopy(state[i], 0, tempState[i], 0, 3);
-        }
-        return tempState;
-    }
-
     private void AIMove() {
         int move = -1;
-        int score = -2;
+        int score = Integer.MIN_VALUE;
+        boolean end = false;
         for(int i = 0; i < 3; i++) {
             for(int j = 0; j < 3; j++) {
                 if(state[i][j] == -1) {
-                    int[][] tempState = stateClone();
-                    tempState[i][j] = 1;
-                    int currScore = recursiveMove(tempState, 0, moves + 1);
+                    state[i][j] = 0;
+                    int endVal = checkForWinner(state, moves + 1);
+                    state[i][j] = -1;
+                    if(endVal == 0) {
+                        move = (i * 3) + j;
+                        end = true;
+                        break;
+                    }
+                    state[i][j] = 1;
+                    int currScore = recursiveMove(state, 0, moves + 1);
+                    state[i][j] = -1;
                     if(currScore > score) {
                         move = (i * 3) + j;
                         score = currScore;
                     }
                 }
             }
+            if(end)
+                break;
         }
 
         int viewID = getResources().getIdentifier("point" + move, "id", getPackageName());
