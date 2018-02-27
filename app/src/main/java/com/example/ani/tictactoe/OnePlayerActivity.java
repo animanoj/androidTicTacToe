@@ -38,14 +38,21 @@ public class OnePlayerActivity extends Game {
         for(int i = 0; i < gridSize; i++) {
             for(int j = 0; j < gridSize; j++) {
                 if(state[i][j] == -1) {
-                    state[i][j] = 0;
-                    int endVal = checkForWinner(state, moves + 1);
-                    state[i][j] = -1;
-                    if(endVal == 0) {
-                        move = (i * 3) + j;
-                        end = true;
-                        break;
+                    //check if game can end in one move
+                    for(int k = 1; k >= 0; k--) {
+                        state[i][j] = k;
+                        int endVal = checkForWinner(state, moves + 1);
+                        state[i][j] = -1;
+                        if(endVal == k) {
+                            move = (i * gridSize) + j;
+                            end = true;
+                            break;
+                        }
                     }
+                    if(end)
+                        break;
+
+                    // check for best move
                     state[i][j] = 1;
                     int currScore = recursiveMove(state, 0, moves + 1);
                     state[i][j] = -1;
