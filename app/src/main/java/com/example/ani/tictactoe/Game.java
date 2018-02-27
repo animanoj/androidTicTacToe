@@ -18,9 +18,9 @@ import org.jetbrains.annotations.Contract;
 
 public abstract class Game extends AppCompatActivity {
 
+    int gridSize;
     int moves;
     int[][] state;
-    int[][] winningPositions = {{0, 1, 2}, {3, 4, 5}, {6, 7, 8}, {0, 3, 6}, {1, 4, 7}, {2, 5, 8}, {0, 4, 8}, {2, 4, 6}};
 
     TextView playerText;
     LinearLayout winLayout;
@@ -29,8 +29,8 @@ public abstract class Game extends AppCompatActivity {
     abstract void updateResultText(int n);
 
     private void resetState() {
-        for(int i = 0; i < 3; i++) {
-            for(int j = 0; j < 3; j++) {
+        for(int i = 0; i < gridSize; i++) {
+            for(int j = 0; j < gridSize; j++) {
                 state[i][j] = -1;
             }
         }
@@ -43,42 +43,12 @@ public abstract class Game extends AppCompatActivity {
 
     @Contract(pure = true)
     int getX(int pos) {
-        int x = 0;
-        switch(pos) {
-            case 3:
-            case 4:
-            case 5:
-                x = 1;
-                break;
-            case 6:
-            case 7:
-            case 8:
-                x = 2;
-                break;
-            default:
-                break;
-        }
-        return x;
+        return (pos / gridSize);
     }
 
     @Contract(pure = true)
     int getY(int pos) {
-        int y = 0;
-        switch(pos) {
-            case 1:
-            case 4:
-            case 7:
-                y = 1;
-                break;
-            case 2:
-            case 5:
-            case 8:
-                y = 2;
-                break;
-            default:
-                break;
-        }
-        return y;
+        return (pos % gridSize);
     }
 
     int checkForWinner() {
@@ -96,7 +66,7 @@ public abstract class Game extends AppCompatActivity {
                 return state[x1][y1];
             }
         }
-        if(moves == 9) {
+        if(moves == (int)Math.pow(gridSize, 2)) {
             return 2;
         }
         return -1;
@@ -195,9 +165,10 @@ public abstract class Game extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_game);
+        setContentView(R.layout.activity_game_3);
 
-        state = new int[3][3];
+        gridSize = getIntent().getIntExtra("gridSize", 3);
+        state = new int[gridSize][gridSize];
         resetState();
 
         playerText = (TextView) findViewById(R.id.playerView);

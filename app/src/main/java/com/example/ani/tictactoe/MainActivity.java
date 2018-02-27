@@ -14,6 +14,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void onePlayer(View view) {
         Intent intent = new Intent(getApplicationContext(), OnePlayerActivity.class);
+        intent.putExtra("gridSize", 3);
         startActivity(intent);
     }
 

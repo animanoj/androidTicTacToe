@@ -19,8 +19,8 @@ public class OnePlayerActivity extends Game {
         }
 
         int nextScore = 0;
-        for(int i = 0; i < 3; i++) {
-            for(int j = 0; j < 3; j++) {
+        for(int i = 0; i < gridSize; i++) {
+            for(int j = 0; j < gridSize; j++) {
                 if(tempState[i][j] == -1) {
                     tempState[i][j] = player;
                     nextScore += Math.max(recursiveMove(tempState, (player + 1) % 2, moves + 1), 0);
@@ -35,8 +35,8 @@ public class OnePlayerActivity extends Game {
         int move = -1;
         int score = Integer.MIN_VALUE;
         boolean end = false;
-        for(int i = 0; i < 3; i++) {
-            for(int j = 0; j < 3; j++) {
+        for(int i = 0; i < gridSize; i++) {
+            for(int j = 0; j < gridSize; j++) {
                 if(state[i][j] == -1) {
                     state[i][j] = 0;
                     int endVal = checkForWinner(state, moves + 1);
@@ -50,7 +50,7 @@ public class OnePlayerActivity extends Game {
                     int currScore = recursiveMove(state, 0, moves + 1);
                     state[i][j] = -1;
                     if(currScore > score) {
-                        move = (i * 3) + j;
+                        move = (i * gridSize) + j;
                         score = currScore;
                     }
                 }
