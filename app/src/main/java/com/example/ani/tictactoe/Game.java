@@ -56,14 +56,27 @@ public abstract class Game extends AppCompatActivity {
     }
 
     int checkForWinner(int[][] state, int moves) {
-        for (int[] combo : winningPositions) {
-            int x1 = getX(combo[0]), x2 = getX(combo[1]), x3 = getX(combo[2]);
-            int y1 = getY(combo[0]), y2 = getY(combo[1]), y3 = getY(combo[2]);
-            if ((state[x1][y1] == state[x2][y2]) &&
-                    (state[x2][y2] == state[x3][y3]) &&
-                    (state[x3][y3] == state[x1][y1]) &&
-                    (state[x1][y1] != -1)) {
-                return state[x1][y1];
+        for(int i = 0; i < gridSize; i++) {
+            for(int j = 0; j < gridSize; j++) {
+                int curr = state[i][j];
+                if(curr == -1)
+                    continue;
+                boolean down = ((i + 2) < gridSize), right = ((j + 2) < gridSize), left = ((j - 2) >= 0);
+                boolean sameDo = down, sameR = right, sameDR = (down && right), sameDL = (down && left);
+                for(int k = 1; k < 3; k++) {
+                    if(sameDo)
+                        sameDo = (state[i + k][j] == curr);
+                    if(sameR)
+                        sameR = (state[i][j + k] == curr);
+                    if(sameDR)
+                        sameDR = (state[i + k][j + k] == curr);
+                    if(sameDL)
+                        sameDL = (state[i + k][j - k] == curr);
+                    if(!(sameDo || sameR || sameDR || sameDL))
+                        break;
+                }
+                if(sameDo || sameR || sameDR || sameDL)
+                    return curr;
             }
         }
         if(moves == (int)Math.pow(gridSize, 2)) {
