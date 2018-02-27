@@ -1,12 +1,14 @@
 <resources>
-    <string name="app_name">Tic Tac Toe</string>
-    <string name="player_text">Player\'s Turn</string>
     <string name="ai_text">AI\'s turn</string>
-    <string name="win">You Win!</string>
-    <string name="lose">You Lose!</string>
+    <string name="app_name">Tic Tac Toe</string>
     <string name="draw">Draw!</string>
+    <string name="lose">You Lose!</string>
+    <string name="menu">Menu</string>
     <string name="one_player">1 Player</string>
-    <string name="two_player">2 Players</string>
+    <string name="play_again">Play Again</string>
+    <string name="player_move">Player %1$d\'s Turn</string>
+    <string name="player_text">Player\'s Turn</string>
+    <string name="player_win">Player %1$d Won!</string>
     <string name="point0">Image for grid position 0</string>
     <string name="point1">Image for grid position 1</string>
     <string name="point2">Image for grid position 2</string>
@@ -16,9 +18,7 @@
     <string name="point6">Image for grid position 6</string>
     <string name="point7">Image for grid position 7</string>
     <string name="point8">Image for grid position 8</string>
-    <string name="player_move">Player %1$d\'s Turn</string>
-    <string name="player_win">Player %1$d Won!</string>
-    <string name="play_again">Play Again</string>
     <string name="restart">Restart</string>
-    <string name="menu">Menu</string>
+    <string name="two_player">2 Players</string>
+    <string name="win">You Win!</string>
 </resources>
