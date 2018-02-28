@@ -9,6 +9,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void twoPlayer(View view) {
         Intent intent = new Intent(getApplicationContext(), TwoPlayerActivity.class);
+        intent.putExtra("gridSize", 3);
         startActivity(intent);
     }
 

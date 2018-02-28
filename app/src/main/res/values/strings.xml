@@ -9,15 +9,7 @@
     <string name="player_move">Player %1$d\'s Turn</string>
     <string name="player_text">Player\'s Turn</string>
     <string name="player_win">Player %1$d Won!</string>
-    <string name="point0">Image for grid position 0</string>
-    <string name="point1">Image for grid position 1</string>
-    <string name="point2">Image for grid position 2</string>
-    <string name="point3">Image for grid position 3</string>
-    <string name="point4">Image for grid position 4</string>
-    <string name="point5">Image for grid position 5</string>
-    <string name="point6">Image for grid position 6</string>
-    <string name="point7">Image for grid position 7</string>
-    <string name="point8">Image for grid position 8</string>
+    <string name="point">Image for grid position</string>
     <string name="restart">Restart</string>
     <string name="two_player">2 Players</string>
     <string name="win">You Win!</string>

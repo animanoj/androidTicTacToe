@@ -3,67 +3,93 @@ package com.example.ani.tictactoe;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 public class OnePlayerActivity extends Game {
 
-    private int recursiveMove(int[][] tempState, int player, int moves) {
-        int winner = checkForWinner(tempState, moves);
-        if(winner != -1) {
-            switch(winner) {
-                case 0:
-                    return -1;
-                case 1:
-                    return 1;
-                case 2:
-                    return 0;
-            }
-        }
-
-        int nextScore = 0;
+    private String boardToString(int[][] state, int player) {
+        StringBuilder result = new StringBuilder();
         for(int i = 0; i < gridSize; i++) {
             for(int j = 0; j < gridSize; j++) {
-                if(tempState[i][j] == -1) {
-                    tempState[i][j] = player;
-                    nextScore += Math.max(recursiveMove(tempState, (player + 1) % 2, moves + 1), 0);
-                    tempState[i][j] = -1;
-                }
+                result
+                        .append(String.valueOf((i * gridSize) + j))
+                        .append(".")
+                        .append(String.valueOf(state[i][j]))
+                        .append(".");
             }
         }
+        return result.append(String.valueOf(player)).toString();
+    }
+
+    private int recursiveMove(int[][] tempState, List<Point> availPoints, Map<String, Integer> map, int player, int moves) {
+        String key = boardToString(state, player);
+        if(map.containsKey(key))
+            return map.get(key);
+        int winner = checkForWinner(tempState, moves);
+        if(winner != -1) {
+            int score;
+            if(winner == 2)
+                score = 0;
+            else if(winner == 1)
+                score = 10;
+            else
+                score = -10;
+            map.put(key, score);
+            return score;
+        }
+
+        int nextScore = player == 0 ? Integer.MAX_VALUE : Integer.MIN_VALUE;
+        for(int i = 0; i < availPoints.size(); i++) {
+            int nextPlayer = (player + 1) % 2;
+
+            Point curr = availPoints.remove(i);
+            int x = curr.getX(), y = curr.getY();
+            tempState[x][y] = player;
+            int currScore = recursiveMove(tempState, availPoints, map, nextPlayer, moves + 1);
+            tempState[x][y] = -1;
+            availPoints.add(i, curr);
+
+            if(player == 0)
+                nextScore = Math.min(nextScore, currScore);
+            else
+                nextScore = Math.max(nextScore, currScore);
+        }
+        map.put(key, nextScore);
         return nextScore;
     }
 
     private void AIMove() {
+        List<Point> availPoints = new ArrayList<>();
         int move = -1;
-        int score = Integer.MIN_VALUE;
-        boolean end = false;
+
         for(int i = 0; i < gridSize; i++) {
             for(int j = 0; j < gridSize; j++) {
                 if(state[i][j] == -1) {
-                    //check if game can end in one move
-                    for(int k = 1; k >= 0; k--) {
-                        state[i][j] = k;
-                        int endVal = checkForWinner(state, moves + 1);
-                        state[i][j] = -1;
-                        if(endVal == k) {
-                            move = (i * gridSize) + j;
-                            end = true;
-                            break;
-                        }
-                    }
-                    if(end)
-                        break;
-
-                    // check for best move
-                    state[i][j] = 1;
-                    int currScore = recursiveMove(state, 0, moves + 1);
-                    state[i][j] = -1;
-                    if(currScore > score) {
-                        move = (i * gridSize) + j;
-                        score = currScore;
-                    }
+                    availPoints.add(new Point(i, j, gridSize));
                 }
             }
-            if(end)
-                break;
+        }
+
+        int score = Integer.MIN_VALUE;
+        Map<String, Integer> map = new HashMap<>();
+        for(int i = 0; i < availPoints.size(); i++) {
+            Point curr = availPoints.get(i);
+            int x = curr.getX(), y = curr.getY();
+
+            availPoints.remove(i);
+            state[x][y] = 1;
+            int currScore = recursiveMove(state, availPoints, map, 0, moves + 1);
+            state[x][y] = -1;
+            availPoints.add(i, curr);
+
+            System.err.println(x + " " + y + " " + currScore);
+            if(currScore > score) {
+                move = curr.getVal();
+                score = currScore;
+            }
         }
 
         int viewID = getResources().getIdentifier("point" + move, "id", getPackageName());

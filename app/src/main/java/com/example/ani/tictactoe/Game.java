@@ -61,22 +61,22 @@ public abstract class Game extends AppCompatActivity {
                 int curr = state[i][j];
                 if(curr == -1)
                     continue;
-                boolean down = ((i + 2) < gridSize), right = ((j + 2) < gridSize), left = ((j - 2) >= 0);
-                boolean sameDo = down, sameR = right, sameDR = (down && right), sameDL = (down && left);
-                for(int k = 1; k < 3; k++) {
-                    if(sameDo)
-                        sameDo = (state[i + k][j] == curr);
-                    if(sameR)
-                        sameR = (state[i][j + k] == curr);
-                    if(sameDR)
-                        sameDR = (state[i + k][j + k] == curr);
-                    if(sameDL)
-                        sameDL = (state[i + k][j - k] == curr);
-                    if(!(sameDo || sameR || sameDR || sameDL))
-                        break;
-                }
-                if(sameDo || sameR || sameDR || sameDL)
+                boolean down = ((i + 2) < gridSize);
+                // need to change this so that 3-in-a-row can change to k-in-a-row
+                if(down && curr == state[i + 1][j] && curr == state[i + 2][j])
                     return curr;
+                if((j + 2) < gridSize) {
+                    if(curr == state[i][j + 1] && curr == state[i][j + 2])
+                        return curr;
+                    if(down && curr == state[i + 1][j + 1] && curr == state[i + 2][j + 2])
+                        return curr;
+                }
+                if((j - 2) >= 0) {
+                    if(curr == state[i][j - 1] && curr == state[i][j - 2])
+                        return curr;
+                    if(down && curr == state[i + 1][j - 1] && curr == state[i + 2][j - 2])
+                        return curr;
+                }
             }
         }
         if(moves == (int)Math.pow(gridSize, 2)) {
@@ -178,9 +178,12 @@ public abstract class Game extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_game_3);
 
         gridSize = getIntent().getIntExtra("gridSize", 3);
+        if(gridSize == 3)
+            setContentView(R.layout.activity_game_3);
+        else if(gridSize == 4)
+            setContentView(R.layout.activity_game_4);
         state = new int[gridSize][gridSize];
         resetState();
 
