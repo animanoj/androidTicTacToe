@@ -2,7 +2,6 @@ package com.example.ani.tictactoe;
 
 import android.widget.TextView;
 
-
 public class TwoPlayerActivity extends Game {
 
     void updateTurnText() {
@@ -22,5 +21,9 @@ public class TwoPlayerActivity extends Game {
             default:
                 break;
         }
+    }
+
+    int legalMove() {
+        return 0;
     }
 }

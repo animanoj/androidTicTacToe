@@ -14,9 +14,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.jetbrains.annotations.Contract;
-
-public abstract class Game extends AppCompatActivity {
+abstract class Game extends AppCompatActivity {
 
     int gridSize;
     int moves;
@@ -27,6 +25,7 @@ public abstract class Game extends AppCompatActivity {
 
     abstract void updateTurnText();
     abstract void updateResultText(int n);
+    abstract int legalMove();
 
     private void resetState() {
         for(int i = 0; i < gridSize; i++) {
@@ -41,12 +40,10 @@ public abstract class Game extends AppCompatActivity {
         startActivity(intent);
     }
 
-    @Contract(pure = true)
     int getX(int pos) {
         return (pos / gridSize);
     }
 
-    @Contract(pure = true)
     int getY(int pos) {
         return (pos % gridSize);
     }
@@ -56,32 +53,72 @@ public abstract class Game extends AppCompatActivity {
     }
 
     int checkForWinner(int[][] state, int moves) {
+        int curr;
+        boolean win;
+
+        //Rows
         for(int i = 0; i < gridSize; i++) {
-            for(int j = 0; j < gridSize; j++) {
-                int curr = state[i][j];
-                if(curr == -1)
-                    continue;
-                boolean down = ((i + 2) < gridSize);
-                // need to change this so that 3-in-a-row can change to k-in-a-row
-                if(down && curr == state[i + 1][j] && curr == state[i + 2][j])
-                    return curr;
-                if((j + 2) < gridSize) {
-                    if(curr == state[i][j + 1] && curr == state[i][j + 2])
-                        return curr;
-                    if(down && curr == state[i + 1][j + 1] && curr == state[i + 2][j + 2])
-                        return curr;
-                }
-                if((j - 2) >= 0) {
-                    if(curr == state[i][j - 1] && curr == state[i][j - 2])
-                        return curr;
-                    if(down && curr == state[i + 1][j - 1] && curr == state[i + 2][j - 2])
-                        return curr;
+            curr = state[i][0];
+            if(curr == -1)
+                continue;
+            win = true;
+            for(int j = 1; j < gridSize; j++) {
+                if(state[i][j] != curr) {
+                    win = false;
+                    break;
                 }
             }
+            if(win)
+                return curr;
         }
-        if(moves == (int)Math.pow(gridSize, 2)) {
+
+        //Columns
+        for(int j = 0; j < gridSize; j++) {
+            curr = state[0][j];
+            if(curr == -1)
+                continue;
+            win = true;
+            for(int i = 1; i < gridSize; i++) {
+                if(state[i][j] != curr) {
+                    win = false;
+                    break;
+                }
+            }
+            if(win)
+                return curr;
+        }
+
+        //Forward Diagonal
+        curr = state[0][0];
+        if(curr != -1) {
+            win = true;
+            for (int i = 1; i < gridSize; i++) {
+                if (state[i][i] != curr) {
+                    win = false;
+                    break;
+                }
+            }
+            if (win)
+                return curr;
+        }
+
+        //Backward Diagonal
+        curr = state[0][gridSize - 1];
+        if(curr != -1) {
+            win = true;
+            for (int i = 1; i < gridSize; i++) {
+                if (state[i][gridSize - (i + 1)] != curr) {
+                    win = false;
+                    break;
+                }
+            }
+            if (win)
+                return curr;
+        }
+
+        if(moves == (int)Math.pow(gridSize, 2))
             return 2;
-        }
+
         return -1;
     }
 
@@ -101,11 +138,14 @@ public abstract class Game extends AppCompatActivity {
                 .setListener(null);
     }
 
-    public void dropIn(View view) {
-        if(moves == 0) {
-            winLayout.setVisibility(View.GONE);
-        }
+    public void dropInScreen(View view) {
+        if(legalMove() != 0)
+            Toast.makeText(this, "Not your turn!", Toast.LENGTH_SHORT).show();
+        else
+            dropIn(view);
+    }
 
+    public void dropIn(View view) {
         ImageView counter = (ImageView) view;
         int pos = Integer.parseInt(counter.getTag().toString());
         int x = getX(pos), y = getY(pos);

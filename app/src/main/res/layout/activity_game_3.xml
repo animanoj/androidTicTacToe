@@ -28,7 +28,7 @@
             app:layout_rowWeight="0.33"
             app:layout_columnWeight="0.33"
             android:padding="15dp"
-            android:onClick="dropIn"
+            android:onClick="dropInScreen"
             android:tag="0"
             android:contentDescription="@string/point"/>
 
@@ -41,7 +41,7 @@
             app:layout_rowWeight="0.33"
             app:layout_columnWeight="0.33"
             android:padding="15dp"
-            android:onClick="dropIn"
+            android:onClick="dropInScreen"
             android:tag="1"
             android:contentDescription="@string/point"/>
 
@@ -54,7 +54,7 @@
             app:layout_rowWeight="0.33"
             app:layout_columnWeight="0.33"
             android:padding="15dp"
-            android:onClick="dropIn"
+            android:onClick="dropInScreen"
             android:tag="2"
             android:contentDescription="@string/point"/>
 
@@ -67,7 +67,7 @@
             app:layout_rowWeight="0.33"
             app:layout_columnWeight="0.33"
             android:padding="15dp"
-            android:onClick="dropIn"
+            android:onClick="dropInScreen"
             android:tag="3"
             android:contentDescription="@string/point"/>
 
@@ -80,7 +80,7 @@
             app:layout_rowWeight="0.33"
             app:layout_columnWeight="0.33"
             android:padding="15dp"
-            android:onClick="dropIn"
+            android:onClick="dropInScreen"
             android:tag="4"
             android:contentDescription="@string/point"/>
 
@@ -93,7 +93,7 @@
             app:layout_rowWeight="0.33"
             app:layout_columnWeight="0.33"
             android:padding="15dp"
-            android:onClick="dropIn"
+            android:onClick="dropInScreen"
             android:tag="5"
             android:contentDescription="@string/point"/>
 
@@ -106,7 +106,7 @@
             app:layout_rowWeight="0.33"
             app:layout_columnWeight="0.33"
             android:padding="15dp"
-            android:onClick="dropIn"
+            android:onClick="dropInScreen"
             android:tag="6"
             android:contentDescription="@string/point"/>
 
@@ -119,7 +119,7 @@
             app:layout_rowWeight="0.33"
             app:layout_columnWeight="0.33"
             android:padding="15dp"
-            android:onClick="dropIn"
+            android:onClick="dropInScreen"
             android:tag="7"
             android:contentDescription="@string/point"/>
 
@@ -132,7 +132,7 @@
             app:layout_rowWeight="0.33"
             app:layout_columnWeight="0.33"
             android:padding="15dp"
-            android:onClick="dropIn"
+            android:onClick="dropInScreen"
             android:tag="8"
             android:contentDescription="@string/point"/>
 
