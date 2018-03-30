@@ -288,8 +288,7 @@ public class OnePlayerActivity extends Game implements TaskCompleted {
 
     public void onTaskComplete(Integer result) {
         System.out.println("Move: " + result);
-        int viewID = getResources().getIdentifier("point" + result, "id", getPackageName());
-        ImageView view = (ImageView) findViewById(viewID);
+        ImageView view = (ImageView) findViewById(ids[result / gridSize][result % gridSize]);
         dropIn(view);
     }
 }

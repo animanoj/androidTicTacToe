@@ -9,8 +9,12 @@
     <string name="player_move">Player %1$d\'s Turn</string>
     <string name="player_text">Player\'s Turn</string>
     <string name="player_win">Player %1$d Won!</string>
-    <string name="point">Image for grid position</string>
     <string name="restart">Restart</string>
     <string name="two_player">2 Players</string>
     <string name="win">You Win!</string>
+    <string name="grid_choice">Grid Size</string>
+    <string-array name="gridSize">
+        <item>3x3</item>
+        <item>4x4</item>
+    </string-array>
 </resources>

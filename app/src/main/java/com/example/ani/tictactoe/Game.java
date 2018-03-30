@@ -9,6 +9,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.GridLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -16,9 +17,8 @@ import android.widget.Toast;
 
 abstract class Game extends AppCompatActivity {
 
-    int gridSize;
-    int moves;
-    int[][] state;
+    int gridSize, moves;
+    int[][] state, ids;
 
     TextView playerText;
     LinearLayout winLayout;
@@ -125,7 +125,7 @@ abstract class Game extends AppCompatActivity {
     void endGame() {
         playerText.setVisibility(View.GONE);
 
-        android.support.v7.widget.GridLayout grid = (android.support.v7.widget.GridLayout) findViewById(R.id.gameBoard);
+        GridLayout grid = (GridLayout) findViewById(R.id.gameBoard);
         for(int i = 0; i < grid.getChildCount(); i++) {
             grid.getChildAt(i).setClickable(false);
         }
@@ -153,19 +153,13 @@ abstract class Game extends AppCompatActivity {
             Toast.makeText(this, "You can't replace a piece!", Toast.LENGTH_SHORT).show();
             return;
         }
-        counter.setTranslationY(-1000f);
+
         if((moves % 2) == 0) {
             counter.setImageResource(R.drawable.x);
         }
         else {
             counter.setImageResource(R.drawable.o);
         }
-        counter.animate()
-                .translationYBy(1000f)
-                .alpha(1f)
-                .rotation(360f)
-                .setDuration(300)
-                .setListener(null);
 
         state[x][y] = (moves % 2);
         moves++;
@@ -183,20 +177,11 @@ abstract class Game extends AppCompatActivity {
         moves = 0;
         resetState();
 
-        android.support.v7.widget.GridLayout grid = (android.support.v7.widget.GridLayout) findViewById(R.id.gameBoard);
+        GridLayout grid = (GridLayout) findViewById(R.id.gameBoard);
         for(int i = 0; i < grid.getChildCount(); i++) {
-            final ImageView child = (ImageView) grid.getChildAt(i);
+            ImageView child = (ImageView) grid.getChildAt(i);
+            child.setImageResource(0);
             child.setClickable(true);
-            child.animate()
-                    .alpha(0f)
-                    .setDuration(300)
-                    .setListener(new AnimatorListenerAdapter() {
-                        @Override
-                        public void onAnimationEnd(Animator animation) {
-                            super.onAnimationEnd(animation);
-                            child.setRotation(-360f);
-                        }
-                    });
         }
         grid.setClickable(true);
 
@@ -220,12 +205,45 @@ abstract class Game extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         gridSize = getIntent().getIntExtra("gridSize", 3);
-        if(gridSize == 3)
-            setContentView(R.layout.activity_game_3);
-        else if(gridSize == 4)
-            setContentView(R.layout.activity_game_4);
+        setContentView(R.layout.activity_game);
+
+        ids = new int[gridSize][gridSize];
         state = new int[gridSize][gridSize];
         resetState();
+
+        GridLayout grid = (GridLayout) findViewById(R.id.gameBoard);
+        grid.setColumnCount(gridSize);
+        grid.setRowCount(gridSize);
+        for(int i = 0; i < gridSize; i++) {
+            for(int j = 0; j < gridSize; j++) {
+                ImageView curr = new ImageView(getApplicationContext());
+                curr.setTag(i * gridSize + j);
+                ids[i][j] = View.generateViewId();
+                curr.setId(ids[i][j]);
+                curr.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dropInScreen(v);
+                    }
+                });
+                curr.setClickable(true);
+                if(j != gridSize - 1) {
+                    if(i == gridSize - 1)
+                        curr.setBackground(getDrawable(R.drawable.border_right));
+                    else
+                        curr.setBackground(getDrawable(R.drawable.border_bottom_right));
+                } else if(i != gridSize - 1)
+                    curr.setBackground(getDrawable(R.drawable.border_bottom));
+
+                GridLayout.LayoutParams params = new GridLayout.LayoutParams(
+                        GridLayout.spec(GridLayout.UNDEFINED, GridLayout.FILL, 1f),
+                        GridLayout.spec(GridLayout.UNDEFINED, GridLayout.FILL, 1f));
+                params.height = 0;
+                params.width = 0;
+                curr.setLayoutParams(params);
+                grid.addView(curr);
+            }
+        }
 
         playerText = (TextView) findViewById(R.id.playerView);
         winLayout = (LinearLayout) findViewById(R.id.winnerLayout);

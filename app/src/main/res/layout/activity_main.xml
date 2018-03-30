@@ -13,36 +13,67 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
+        android:orientation="vertical"
         android:layout_alignParentBottom="true"
-        android:layout_centerVertical="true"
-        android:layout_marginBottom="30dp"
-        style="?android:attr/buttonBarStyle" >
+        android:layout_marginBottom="30dp">
 
-        <Button
-            android:id="@+id/buttonOne"
-            style="?android:attr/buttonBarButtonStyle"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.5"
-            android:onClick="onePlayer"
-            android:text="@string/one_player"
-            android:textColor="@android:color/black" />
+        <LinearLayout
+            android:id="@+id/gridChoice"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="30dp"
+            android:orientation="horizontal">
 
-        <Button
-            android:id="@+id/buttonTwo"
-            style="?android:attr/buttonBarButtonStyle"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.5"
-            android:onClick="twoPlayer"
-            android:text="@string/two_player"
-            android:textColor="@android:color/black" />
+            <TextView
+                android:id="@+id/gridText"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.4"
+                android:text="@string/grid_choice"
+                android:textAlignment="center"
+                android:textColor="@android:color/black"
+                android:textSize="20sp" />
+
+            <Spinner
+                android:id="@+id/gridSpinner"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.6" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/modeChoice"
+            style="?android:attr/buttonBarStyle"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/buttonOne"
+                style="?android:attr/buttonBarButtonStyle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.5"
+                android:onClick="onePlayer"
+                android:text="@string/one_player"
+                android:textColor="@android:color/black" />
+
+            <Button
+                android:id="@+id/buttonTwo"
+                style="?android:attr/buttonBarButtonStyle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.5"
+                android:onClick="twoPlayer"
+                android:text="@string/two_player"
+                android:textColor="@android:color/black" />
+
+        </LinearLayout>
 
     </LinearLayout>
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/appName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
